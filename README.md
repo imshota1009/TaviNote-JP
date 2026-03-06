@@ -8,7 +8,7 @@
 </p>
 
 **TaviNote** is a trip planning app that allows you to manage everything from "planning -> preparation -> the day of" all in one place.  
-It works entirely in the browser, requiring no server. All data is saved locally.
+It works entirely in the browser, powered by **Firebase**. Data is safely synced to the cloud, allowing multiple users to share and collaborate on trip plans using a Room ID.
 
 ---
 
@@ -50,14 +50,11 @@ It works entirely in the browser, requiring no server. All data is saved locally
 
 ### Start Using Instantly
 
-1. Download or clone this repository
-   ```bash
-   git clone https://github.com/your-username/TaviNote.git
-   ```
-2. Open `index.html` in your browser.
-3. Create a trip and start planning!
+You can access the live application directly from any modern browser:
 
-> **💡 Hint:** No server is required. Just download and open in your browser!
+**👉 [TaviNote on Firebase](https://tavinote-app-shota.web.app/)**
+
+> **💡 Hint:** Since data is saved to the cloud, you can access your travel plans from any device!
 
 ### Requirements
 
@@ -86,17 +83,17 @@ TaviNote/
 | Technology | Purpose |
 |------|------|
 | **HTML5 / CSS3 / JavaScript** | Core structure, design, and logic |
+| **Firebase Firestore** | Real-time database for storing trips and sharing via Room ID |
+| **Firebase Hosting** | Application hosting and deployment |
 | **Leaflet.js** | Map display (Places list, Nearby search) |
 | **OpenStreetMap** | Map tiles, Address search (Nominatim API) |
 | **Overpass API** | Searching nearby convenience stores, stations, etc. |
-
-| **localStorage** | Data saving (Kept within the browser) |
 
 ---
 
 ## 📸 Screenshots
 
-> Open `index.html` in your browser, and you can start using it immediately!
+> Access the live app at [tavinote-app-shota.web.app](https://tavinote-app-shota.web.app/), and you can start using it immediately!
 
 ---
 
