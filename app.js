@@ -25,7 +25,7 @@
             packing: '👜 持ち物', money: '💰 お金', vote: '🗳️ 投票',
             // 概要タブ
             prepProgress: '🌳 準備の進み具合', tripInfo: '📋 旅行の情報',
-            createShiori: '📄 しおりを作る', reminder: '⏰ リマインダー',
+            createShiori: '📄 しおりを作る', shareTripBtn: '👤 メンバーを招待', reminder: '⏰ リマインダー',
             addReminder: '＋ リマインダー追加',
             // 日記
             travelDiary: '📖 旅行日記', writeDiary: '＋ 日記を書く',
@@ -87,7 +87,7 @@
             // チケットモーダル
             addTicketTitle: '🎫 チケットを追加', ticketType: '種類',
             trainTicket: '🚄 新幹線・電車', flightTicket: '✈️ 飛行機',
-            hotelTicket: '🏨 ホテル', eventTicket: '🎫 イベント',
+            hotelTicket: '🏨 ホテル', ryokanTicket: '🏯 旅館', eventTicket: '🎫 イベント',
             otherTicket: '📋 その他', ticketTitle: 'タイトル',
             reservationCode: '予約番号・確認番号', ticketMemo: 'メモ',
             qrImage: 'QR画像（任意）',
@@ -118,7 +118,7 @@
             treeMsg100: '🎉 準備完了！いってらっしゃい！',
             // 概要ラベル
             dateLabel: '日程', membersLabel: 'メンバー', budgetLabel: '予算',
-            todoProgressLabel: 'TODO進捗', placesLabel: '行きたい場所',
+            prefectureLabel: '行き先', todoProgressLabel: 'TODO進捗', placesLabel: '行きたい場所',
             diaryLabel: '日記', completed: '完了', items: '件',
             notSet: '未設定',
             // 交通検索カード
@@ -135,14 +135,6 @@
             prepTitle: '🛡️ 旅の準備', prepDesc: '保険やWi-Fiレンタルなど',
             searchMemoTitle: '🗒️ 検索メモ', searchMemoDesc: '調べた内容をメモしておこう',
             saveMemo: 'メモを保存',
-            // 天気予報
-            weatherNav: '☁️ 天気予報',
-            weatherCity: '都市名で検索', weatherCityHint: '例：東京、大阪、札幌',
-            weatherSearch: '検索', weatherLoading: '天気情報を取得中...',
-            weatherError: '天気情報の取得に失敗しました', weatherNotFound: '都市が見つかりません',
-            weatherCurrent: '現在の天気', weatherForecastLabel: '7日間予報',
-            weatherTemp: '気温', weatherHigh: '最高', weatherLow: '最低',
-            weatherWind: '風速', weatherHumidity: '湿度',
             // フォトギャラリー
             photos: '📸 写真', photosTitle: '📸 フォトギャラリー',
             addPhotoBtn: '＋ 写真を追加', noPhotos: 'まだ写真がありません',
@@ -169,10 +161,19 @@
             daysUntilTrip: '日後',
             daysAgo: '日前',
             today: '今日！',
+            joinTrip: 'ルームIDで参加',
+            joinTripTitle: '🤝 ルームIDで参加',
+            roomIdLabel: 'ルームID',
+            join: '参加する',
+            shareTripTitle: '🤝 メンバーを招待',
+            roomIdShareLabel: 'この旅行のルームID',
+            roomIdHint: '「ルームIDで参加」に入力して参加してもらえます。',
+            shareLinkLabel: '招待リンク (URL)',
+            shareLinkHint: 'リンクを開くだけで参加できます。',
         },
         en: {
             home: 'Home', memoBoard: 'Memo Board', transportSearch: 'Transport & Hotels',
-            weatherNav: '☁️ Weather', nearbySearch: 'Nearby',
+            nearbySearch: 'Nearby',
             myTripPlans: '🌿 My Trip Plans', newTrip: 'New Trip',
             noTripsYet: 'No trip plans yet',
             noTripsHint: 'Create your first trip with the "New Trip" button!',
@@ -182,7 +183,7 @@
             packing: '👜 Packing', money: '💰 Money', vote: '🗳️ Vote',
             photos: '📸 Photos', review: '📊 Review',
             prepProgress: '🌳 Preparation Progress', tripInfo: '📋 Trip Info',
-            createShiori: '📄 Create Itinerary', reminder: '⏰ Reminders',
+            createShiori: '📄 Create Itinerary', shareTripBtn: '👤 Invite Members', reminder: '⏰ Reminders',
             addReminder: '＋ Add Reminder',
             travelDiary: '📖 Travel Diary', writeDiary: '＋ Write Diary',
             wantToGo: '📍 Places to Visit', addPlace: '＋ Add Place',
@@ -223,7 +224,7 @@
             memoColor: 'Memo Color', pinMemo: 'Pin it 📌',
             addTicketTitle: '🎫 Add Ticket', ticketType: 'Type',
             trainTicket: '🚄 Train', flightTicket: '✈️ Flight',
-            hotelTicket: '🏨 Hotel', eventTicket: '🎫 Event',
+            hotelTicket: '🏨 Hotel', ryokanTicket: '🏯 Ryokan', eventTicket: '🎫 Event',
             otherTicket: '📋 Other', ticketTitle: 'Title',
             reservationCode: 'Reservation Code', ticketMemo: 'Memo',
             qrImage: 'QR Image (Optional)',
@@ -247,7 +248,7 @@
             treeMsg75: 'Flowers are blooming! Almost done!',
             treeMsg100: '🎉 All set! Have a great trip!',
             dateLabel: 'Dates', membersLabel: 'Members', budgetLabel: 'Budget',
-            todoProgressLabel: 'TODO Progress', placesLabel: 'Places to Visit',
+            prefectureLabel: 'Destination', todoProgressLabel: 'TODO Progress', placesLabel: 'Places to Visit',
             diaryLabel: 'Diary', completed: 'completed', items: 'items',
             notSet: 'Not set',
             shinkansenTitle: '🎫 Train Reservations', shinkansenDesc: 'Book train tickets online',
@@ -259,17 +260,9 @@
             gourmetTitle: '🍽️ Restaurants', gourmetDesc: 'Find local eateries',
             spotTitle: '🏛️ Attractions', spotDesc: 'Find sightseeing spots',
             mapTitle: '🗺️ Maps & Routes', mapDesc: 'Check routes & surroundings',
-            weatherTitle: '☀️ Weather', weatherDesc: 'Check the weather forecast',
             prepTitle: '🛡️ Travel Prep', prepDesc: 'Insurance, Wi-Fi rental, etc.',
             searchMemoTitle: '🗒️ Search Memo', searchMemoDesc: 'Save your research notes',
             saveMemo: 'Save Memo',
-            weatherTitle: '☁️ Weather Forecast',
-            weatherCity: 'Search by City', weatherCityHint: 'e.g. Tokyo, Osaka, Sapporo',
-            weatherSearch: 'Search', weatherLoading: 'Loading weather...',
-            weatherError: 'Failed to get weather', weatherNotFound: 'City not found',
-            weatherCurrent: 'Current Weather', weatherForecastLabel: '7-Day Forecast',
-            weatherTemp: 'Temperature', weatherHigh: 'High', weatherLow: 'Low',
-            weatherWind: 'Wind', weatherHumidity: 'Humidity',
             photos: '📸 Photos', photosTitle: '📸 Photo Gallery',
             addPhotoBtn: '＋ Add Photos', noPhotos: 'No photos yet',
             noPhotosHint: 'Add trip memories with "Add Photos"!',
@@ -290,6 +283,15 @@
             daysUntilTrip: 'days to go',
             daysAgo: 'days ago',
             today: 'Today!',
+            joinTrip: 'Join via Room ID',
+            joinTripTitle: '🤝 Join by Room ID',
+            roomIdLabel: 'Room ID',
+            join: 'Join',
+            shareTripTitle: '🤝 Invite Members',
+            roomIdShareLabel: 'Room ID for this Trip',
+            roomIdHint: 'Friends can join by entering this Room ID.',
+            shareLinkLabel: 'Invite Link (URL)',
+            shareLinkHint: 'Friends can join simply by opening this link.',
         }
     };
 
@@ -334,18 +336,139 @@
         if (currentView === 'memo-board') renderMemoBoard();
     }
 
-    function loadData() {
+    // ========== データ管理 (Firestore対応) ==========
+    let db, fbHelpers;
+
+    function loadLocalSettings() {
         try {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            return raw ? JSON.parse(raw) : { trips: [], searchMemo: '', memos: [], darkMode: false };
-        } catch { return { trips: [], searchMemo: '', memos: [], darkMode: false }; }
+            const raw = localStorage.getItem('tavinote_settings');
+            return raw ? JSON.parse(raw) : { myTrips: [], searchMemo: '', memos: [], darkMode: false, lang: 'ja' };
+        } catch { return { myTrips: [], searchMemo: '', memos: [], darkMode: false, lang: 'ja' }; }
+    }
+
+    function saveLocalSettings(settings) {
+        localStorage.setItem('tavinote_settings', JSON.stringify(settings));
+    }
+
+    let localSettings = loadLocalSettings();
+    let appData = {
+        trips: [],
+        searchMemo: localSettings.searchMemo || '',
+        memos: localSettings.memos || [],
+        darkMode: !!localSettings.darkMode,
+        lang: localSettings.lang || 'ja'
+    };
+    let unsubscribes = {};
+
+    function initTrips() {
+        if (!window.firebaseDb || !window.firebaseHelpers) {
+            console.error("Firebase is not initialized yet!");
+            return;
+        }
+        db = window.firebaseDb;
+        fbHelpers = window.firebaseHelpers;
+
+        // 招待リンクの確認
+        const params = new URLSearchParams(window.location.search);
+        const shareId = params.get('share');
+        if (shareId && !localSettings.myTrips.includes(shareId)) {
+            localSettings.myTrips.push(shareId);
+            saveLocalSettings(localSettings);
+            window.history.replaceState({}, document.title, window.location.pathname);
+            showToast('🤝 旅行プランに参加しました！');
+        }
+
+        // 旧localStorage（STORAGE_KEY）からの移行処理
+        try {
+            const oldRaw = localStorage.getItem(STORAGE_KEY);
+            if (oldRaw) {
+                const oldData = JSON.parse(oldRaw);
+                if (oldData.trips && oldData.trips.length > 0) {
+                    oldData.trips.forEach(t => {
+                        if (!localSettings.myTrips.includes(t.id)) {
+                            localSettings.myTrips.push(t.id);
+                            // Firestoreへ保存
+                            fbHelpers.setDoc(fbHelpers.doc(db, 'trips', t.id), t).catch(e => console.error(e));
+                        }
+                    });
+                }
+                appData.searchMemo = oldData.searchMemo || '';
+                appData.memos = oldData.memos || [];
+                appData.darkMode = !!oldData.darkMode;
+                appData.lang = oldData.lang || 'ja';
+                saveData();
+                localStorage.removeItem(STORAGE_KEY);
+            }
+        } catch (e) { console.error(e); }
+
+        localSettings.myTrips.forEach(tripId => listenToTrip(tripId));
+    }
+
+    function listenToTrip(tripId) {
+        if (!db || !fbHelpers) return;
+        if (unsubscribes[tripId]) return;
+        unsubscribes[tripId] = fbHelpers.onSnapshot(fbHelpers.doc(db, 'trips', tripId), (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const idx = appData.trips.findIndex(t => t.id === tripId);
+                if (idx >= 0) {
+                    appData.trips[idx] = data;
+                    if (currentTrip && currentTrip.id === tripId) {
+                        currentTrip = data;
+                        if (currentView === 'trip-detail') {
+                            renderTripDetail();
+                            switchTab(currentTab);
+                        }
+                    }
+                } else {
+                    appData.trips.push(data);
+                }
+                if (currentView === 'dashboard') renderDashboard();
+            } else {
+                appData.trips = appData.trips.filter(t => t.id !== tripId);
+                localSettings.myTrips = localSettings.myTrips.filter(id => id !== tripId);
+                saveLocalSettings(localSettings);
+                if (currentTrip && currentTrip.id === tripId) showView('dashboard');
+                if (currentView === 'dashboard') renderDashboard();
+                if (unsubscribes[tripId]) {
+                    unsubscribes[tripId]();
+                    delete unsubscribes[tripId];
+                }
+            }
+        });
     }
 
     function saveData() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-    }
+        localSettings.searchMemo = appData.searchMemo;
+        localSettings.memos = appData.memos;
+        localSettings.darkMode = appData.darkMode;
+        localSettings.lang = appData.lang;
 
-    let appData = loadData();
+        const currentIds = appData.trips.map(t => t.id);
+        appData.trips.forEach(t => {
+            // 先にFirestoreにデータを保存（キャッシュに乗せる）
+            if (db && fbHelpers) fbHelpers.setDoc(fbHelpers.doc(db, 'trips', t.id), t).catch(e => console.error(e));
+
+            // その後、まだ監視していないIDなら監視をスタートする（初期snapshotで存在確認可能になる）
+            if (!localSettings.myTrips.includes(t.id)) {
+                localSettings.myTrips.push(t.id);
+                listenToTrip(t.id);
+            }
+        });
+
+        localSettings.myTrips.forEach(id => {
+            if (!currentIds.includes(id)) {
+                if (db && fbHelpers) fbHelpers.deleteDoc(fbHelpers.doc(db, 'trips', id)).catch(e => console.error(e));
+                if (unsubscribes[id]) {
+                    unsubscribes[id]();
+                    delete unsubscribes[id];
+                }
+            }
+        });
+
+        localSettings.myTrips = currentIds;
+        saveLocalSettings(localSettings);
+    }
 
     // ========== ユーティリティ ==========
     function $(sel) { return document.querySelector(sel); }
@@ -482,6 +605,7 @@
           <img src="${treeImg}" alt="Tree" class="trip-card-tree-img" />
           <div class="trip-card-title">${escHtml(trip.name)}</div>
           <div class="trip-card-date">📅 ${formatDate(trip.date)}${trip.endDate ? ' 〜 ' + formatDate(trip.endDate) : ''} ${countdown ? `・${countdown}` : ''}</div>
+          ${trip.prefecture ? `<div class="trip-card-members" style="color:var(--text);font-weight:bold;">📍 ${escHtml(trip.prefecture)}</div>` : ''}
           ${trip.members ? `<div class="trip-card-members">👥 ${escHtml(trip.members)}</div>` : ''}
           <div class="trip-card-progress"><div class="trip-card-progress-bar" style="width:${pct}%"></div></div>
           <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">${done}/${todos.length} 完了</div>
@@ -507,6 +631,7 @@
             endDate: $('#inputTripEndDate').value,
             members: $('#inputTripMembers').value.trim(),
             budget: $('#inputTripBudget').value.trim(),
+            prefecture: $('#selectTripPrefecture').value,
             todos: [],
             places: [],
             diary: [],
@@ -529,6 +654,40 @@
         clearForm('modalNewTrip');
         showToast(`🗺️ 「${name}」を作成しました！`);
         renderDashboard();
+    }
+
+    async function joinTripByRoomId() {
+        const roomId = $('#inputRoomId').value.trim();
+        if (!roomId) { showToast('ルームIDを入力してください'); return; }
+
+        if (localSettings.myTrips.includes(roomId)) {
+            showToast('すでにこの旅行のメンバーです');
+            closeModal('modalJoinTrip');
+            return;
+        }
+
+        if (db && fbHelpers) {
+            try {
+                const docRef = fbHelpers.doc(db, 'trips', roomId);
+                const docSnap = await fbHelpers.getDoc(docRef);
+                if (docSnap.exists()) {
+                    localSettings.myTrips.push(roomId);
+                    saveData();
+                    listenToTrip(roomId);
+
+                    closeModal('modalJoinTrip');
+                    $('#inputRoomId').value = '';
+                    showToast('🎉 旅行プランに参加しました！');
+                } else {
+                    showToast('⚠️ 有効なルームIDではありません');
+                }
+            } catch (error) {
+                console.error("Error fetching trip:", error);
+                showToast('通信エラーが発生しました');
+            }
+        } else {
+            showToast('通信の準備ができていません。少し待ってから再試行してください');
+        }
     }
 
     // ========== 旅行詳細 ==========
@@ -568,6 +727,10 @@
       <div class="info-item">
         <span class="info-item-icon">📅</span>
         <div><div class="info-item-label">${t('dateLabel')}</div><div class="info-item-value">${formatDate(currentTrip.date)}${currentTrip.endDate ? ' 〜 ' + formatDate(currentTrip.endDate) : ''}</div></div>
+      </div>
+      <div class="info-item">
+        <span class="info-item-icon">📍</span>
+        <div><div class="info-item-label">${t('prefectureLabel')}</div><div class="info-item-value">${escHtml(currentTrip.prefecture) || t('notSet')}</div></div>
       </div>
       <div class="info-item">
         <span class="info-item-icon">👥</span>
@@ -1601,6 +1764,7 @@
 
     // ========== イベントリスナー ==========
     function init() {
+        initTrips();
         applyDarkMode();
         applyLanguage();
 
@@ -1619,16 +1783,19 @@
         $$('.sidebar-menu li').forEach(li => {
             li.addEventListener('click', () => {
                 const view = li.dataset.view;
-                if (view === 'dashboard' || view === 'search-links' || view === 'memo-board' || view === 'currency' || view === 'nearby') {
+                if (view === 'dashboard' || view === 'search-links' || view === 'memo-board' || view === 'nearby') {
                     currentTrip = null;
                     showView(view);
                 }
             });
         });
 
-        // 新規旅行
+        // 新規旅行・参加
         $('#btnNewTrip').addEventListener('click', () => openModal('modalNewTrip'));
         $('#btnCreateTrip').addEventListener('click', createTrip);
+
+        $('#btnOpenJoinTrip').addEventListener('click', () => { clearForm('modalJoinTrip'); openModal('modalJoinTrip'); });
+        $('#btnJoinTrip').addEventListener('click', joinTripByRoomId);
 
         // 旅行カードクリック
         $('#tripCardsContainer').addEventListener('click', (e) => {
@@ -1746,9 +1913,41 @@
         // しおり
         $('#btnExportShiori').addEventListener('click', exportShiori);
 
-        // 天気予報
-        $('#btnSearchWeather').addEventListener('click', searchWeather);
-        $('#weatherCityInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') searchWeather(); });
+        // 共有
+        const btnShare = $('#btnShareTrip');
+        if (btnShare) {
+            btnShare.addEventListener('click', () => {
+                if (!currentTrip) return;
+                const url = new URL(window.location.href);
+                url.searchParams.set('share', currentTrip.id);
+
+                $('#displayRoomId').value = currentTrip.id;
+                $('#displayShareLink').value = url.toString();
+
+                openModal('modalShare');
+            });
+        }
+
+        const btnCopyRoomId = $('#btnCopyRoomId');
+        if (btnCopyRoomId) {
+            btnCopyRoomId.addEventListener('click', () => {
+                navigator.clipboard.writeText($('#displayRoomId').value).then(() => {
+                    const msg = appData.lang === 'en' ? '📋 Copied Room ID!' : '📋 ルームIDをコピーしました！';
+                    showToast(msg);
+                });
+            });
+        }
+
+        const btnCopyShareLink = $('#btnCopyShareLink');
+        if (btnCopyShareLink) {
+            btnCopyShareLink.addEventListener('click', () => {
+                navigator.clipboard.writeText($('#displayShareLink').value).then(() => {
+                    const msg = appData.lang === 'en' ? '📋 Copied Share Link!' : '📋 招待リンクをコピーしました！';
+                    showToast(msg);
+                });
+            });
+        }
+
 
         // フォトギャラリー
         $('#btnAddPhoto').addEventListener('click', () => $('#photoFileInput').click());
@@ -1797,99 +1996,6 @@
         showView('dashboard');
     }
 
-    // ========== 天気予報 ==========
-    const CITY_COORDS = {
-        '東京': { lat: 35.6762, lng: 139.6503 }, '大阪': { lat: 34.6937, lng: 135.5023 },
-        '札幌': { lat: 43.0618, lng: 141.3545 }, '福岡': { lat: 33.5904, lng: 130.4017 },
-        '名古屋': { lat: 35.1815, lng: 136.9066 }, '京都': { lat: 35.0116, lng: 135.7681 },
-        '神戸': { lat: 34.6901, lng: 135.1956 }, '広島': { lat: 34.3853, lng: 132.4553 },
-        '仙台': { lat: 38.2682, lng: 140.8694 }, '那覇': { lat: 26.2124, lng: 127.6809 },
-        '横浜': { lat: 35.4437, lng: 139.638 }, '奈良': { lat: 34.6851, lng: 135.8048 },
-        '金沢': { lat: 36.5613, lng: 136.6562 }, '熊本': { lat: 32.8032, lng: 130.7079 },
-        '鹿児島': { lat: 31.5966, lng: 130.5571 }, '長崎': { lat: 32.7503, lng: 129.8779 },
-        'tokyo': { lat: 35.6762, lng: 139.6503 }, 'osaka': { lat: 34.6937, lng: 135.5023 },
-        'sapporo': { lat: 43.0618, lng: 141.3545 }, 'fukuoka': { lat: 33.5904, lng: 130.4017 },
-        'nagoya': { lat: 35.1815, lng: 136.9066 }, 'kyoto': { lat: 35.0116, lng: 135.7681 },
-        'naha': { lat: 26.2124, lng: 127.6809 }, 'yokohama': { lat: 35.4437, lng: 139.638 },
-    };
-
-    const WEATHER_ICONS = {
-        0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️', 45: '🌫️', 48: '🌫️',
-        51: '🌦️', 53: '🌧️', 55: '🌧️', 61: '🌧️', 63: '🌧️', 65: '🌧️',
-        71: '🌨️', 73: '🌨️', 75: '🌨️', 77: '🌨️', 80: '🌦️', 81: '🌧️',
-        82: '⛈️', 85: '🌨️', 86: '🌨️', 95: '⛈️', 96: '⛈️', 99: '⛈️',
-    };
-    const WEATHER_DESC_JA = {
-        0: '快晴', 1: 'ほぼ晴れ', 2: '一部曇り', 3: '曇り', 45: '霧', 48: '着氷霧',
-        51: '小雨', 53: '雨', 55: '強い雨', 61: '小雨', 63: '雨', 65: '大雨',
-        71: '小雪', 73: '雪', 75: '大雪', 77: 'みぞれ', 80: 'にわか雨', 81: '雨',
-        82: '激しい雨', 85: '小雪', 86: '大雪', 95: '雷雨', 96: '雷雨・雹', 99: '激しい雷雨',
-    };
-
-    async function searchWeather() {
-        const input = $('#weatherCityInput').value.trim();
-        if (!input) return;
-        const resultEl = $('#weatherResult');
-        const forecastEl = $('#weatherForecast');
-        resultEl.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted)">${t('weatherLoading')}</div>`;
-        forecastEl.innerHTML = '';
-        try {
-            let lat, lng, cityName = input;
-            const lower = input.toLowerCase();
-            if (CITY_COORDS[input] || CITY_COORDS[lower]) {
-                const c = CITY_COORDS[input] || CITY_COORDS[lower];
-                lat = c.lat; lng = c.lng;
-            } else {
-                const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(input)}&count=1&language=ja`);
-                const geoData = await geoRes.json();
-                if (!geoData.results || geoData.results.length === 0) {
-                    resultEl.innerHTML = `<div style="text-align:center;padding:20px;color:var(--accent)">${t('weatherNotFound')}</div>`;
-                    return;
-                }
-                lat = geoData.results[0].latitude;
-                lng = geoData.results[0].longitude;
-                cityName = geoData.results[0].name || input;
-            }
-            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weathercode,windspeed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo&forecast_days=7`);
-            const data = await res.json();
-            const c = data.current;
-            const icon = WEATHER_ICONS[c.weathercode] || '🌤️';
-            const desc = WEATHER_DESC_JA[c.weathercode] || '';
-            resultEl.innerHTML = `
-                <div class="weather-current-card">
-                    <div class="weather-city-name">${escHtml(cityName)}</div>
-                    <div class="weather-icon-large">${icon}</div>
-                    <div class="weather-temp-large">${c.temperature_2m}°C</div>
-                    <div class="weather-desc">${desc}</div>
-                    <div class="weather-details">
-                        <span>💧 ${t('weatherHumidity')}: ${c.relative_humidity_2m}%</span>
-                        <span>💨 ${t('weatherWind')}: ${c.windspeed_10m} km/h</span>
-                    </div>
-                </div>
-            `;
-            const days = data.daily;
-            let forecastHtml = `<h4 style="margin:20px 0 12px;">${t('weatherForecastLabel')}</h4><div class="weather-forecast-grid">`;
-            for (let i = 0; i < days.time.length; i++) {
-                const d = new Date(days.time[i]);
-                const dayName = d.toLocaleDateString('ja-JP', { weekday: 'short', month: 'numeric', day: 'numeric' });
-                const fIcon = WEATHER_ICONS[days.weathercode[i]] || '🌤️';
-                forecastHtml += `
-                    <div class="weather-forecast-day">
-                        <div class="forecast-date">${dayName}</div>
-                        <div class="forecast-icon">${fIcon}</div>
-                        <div class="forecast-temps">
-                            <span class="temp-high">${days.temperature_2m_max[i]}°</span>
-                            <span class="temp-low">${days.temperature_2m_min[i]}°</span>
-                        </div>
-                    </div>
-                `;
-            }
-            forecastHtml += '</div>';
-            forecastEl.innerHTML = forecastHtml;
-        } catch (e) {
-            resultEl.innerHTML = `<div style="text-align:center;padding:20px;color:var(--accent)">${t('weatherError')}</div>`;
-        }
-    }
 
     // ========== フォトギャラリー ==========
     function handleGalleryUpload(e) {
@@ -2012,9 +2118,17 @@
     };
 
     // 起動
+    function tryInit() {
+        if (window.firebaseDb) {
+            init();
+        } else {
+            window.addEventListener('firebaseReady', init);
+        }
+    }
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', tryInit);
     } else {
-        init();
+        tryInit();
     }
 })();

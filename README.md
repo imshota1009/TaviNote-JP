@@ -33,10 +33,6 @@ It works entirely in the browser, requiring no server. All data is saved locally
 | 📄 **Itinerary** | Generate a printable itinerary summarizing trip information with a single button. |
 
 ### 🚶 Useful During the Trip
-| Feature | Description |
-|------|------|
-| 📍 **Nearby Search** | Get your current location via GPS and display nearby convenience stores, stations, restaurants, etc. on a map. |
-| ☁️ **Weather Forecast** | Search for standard weather forecast of the destinations and show conditions for up to 7 days. |
 | 💰 **Money Management** | Record expenses -> Compare with budget -> Automatically calculate bill splitting. |
 | 📸 **Photo Gallery** | Upload and manage photos from your trip to look back on your memories. |
 | 📊 **Trip Review** | Rate your trip out of 5 stars and add memories and notes for future trips. |
@@ -66,7 +62,7 @@ It works entirely in the browser, requiring no server. All data is saved locally
 ### Requirements
 
 - Modern browser (Chrome, Firefox, Safari, Edge)
-- Internet connection (Used for map display, weather forecasts, and nearby searches)
+- Internet connection (Used for map display and nearby searches)
 
 ---
 
@@ -93,7 +89,7 @@ TaviNote/
 | **Leaflet.js** | Map display (Places list, Nearby search) |
 | **OpenStreetMap** | Map tiles, Address search (Nominatim API) |
 | **Overpass API** | Searching nearby convenience stores, stations, etc. |
-| **Open-Meteo API** | Weather forecasting |
+
 | **localStorage** | Data saving (Kept within the browser) |
 
 ---

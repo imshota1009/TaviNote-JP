@@ -1,0 +1,17 @@
+{
+    "name": "TaviNote",
+    "short_name": "TaviNote",
+    "description": "友人や恋人と旅行プランを共有できる旅行計画アプリ",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2196F3",
+    "icons": [
+        {
+            "src": "icon.png",
+            "sizes": "192x192 512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

@@ -42,12 +42,6 @@ How saving works:
 2. Requests the **Overpass API** (OpenStreetMap database) to "find convenience stores within 1km around these coordinates".
 3. Displays the found locations with markers on a map using **Leaflet.js**.
 
-### ☁️ Weather Forecast
-1. The user inputs a city name.
-2. The city name is converted to coordinates using the Open-Meteo Geocoding API.
-3. Current weather and a 7-day forecast are fetched from the **Open-Meteo API**.
-4. Results are displayed on the weather page.
-
 ### 👜 Packing Checklist
 1. When a template is selected, a pre-prepared list of items is added.
 2. When checked, it changes to `checked: true`, and a strikethrough is displayed.
