@@ -93,6 +93,8 @@ TaviNote/
 
 ## 📸 Screenshots
 
+![Menu Screen](./images/menu.png)
+
 > Access the live app at [tavinote-app-shota.web.app](https://tavinote-app-shota.web.app/), and you can start using it immediately!
 
 ---
