@@ -1,111 +1,84 @@
 # 📚 Learn with TaviNote (LEARN.md)
 
-TaviNote is an app created using only HTML, CSS, and JavaScript.  
-This file explains the mechanics of the app in an easy-to-understand way. Please use it as an entry point for reading the code!
+TaviNote is a modern web application built with a focus on premium user experience and "Preparation as Growth". This guide explains the technical architecture and how the app works under the hood.
 
 ---
 
-## 🏗️ App Overview
+## 🏗️ Architecture Overview
+
+The project is structured into two main parts: a **Marketing Landing Page** and the **Core Application**.
 
 ```
-Browser
-├── index.html  -> The "skeleton" of the screen (buttons, input fields, menus, etc.)
-├── style.css   -> The "appearance" of the screen (colors, sizes, animations, etc.)
-└── app.js      -> The "behavior" of the screen (what happens when a button is pressed)
+Project Root
+├── public/
+│   ├── index.html       -> Landing Page (Marketing, Introduction, SEO)
+│   ├── app.html         -> The App "Skeleton" (The functional UI)
+│   ├── app.js           -> The "Behavior" (Logic, Firebase, State Management)
+│   ├── landing.css      -> Landing page styles (Hero animations, typography)
+│   └── style.css        -> Application core styles (Theming, Layouts)
+└── android/             # Capacitor project for Android support
 ```
 
-> 💡 **As an analogy:** HTML is the "blueprint" of a house, CSS is the "interior design", and JavaScript is the "electrical wiring".
+> 💡 **The Dual-File Approach**: Separating `index.html` (landing) and `app.html` (app) allows us to optimize the landing page for speed and SEO while keeping the heavy application logic isolated and ready for Capacitor-based native environments.
 
 ---
 
-## 📦 How Data is Saved
+## 📦 Data Management: From Local to Cloud
 
-TaviNote uses a mechanism called **localStorage**.  
-This is a feature that allows data to be saved within the browser, meaning no server is required.
+Originally based on `localStorage`, TaviNote has evolved to use **Google Firebase** for real-time synchronization.
 
-```
-How saving works:
-1. The user writes a memo.
-2. app.js converts the data into a format called JSON.
-3. Saves it to localStorage (it doesn't disappear even if you close the browser).
-4. The next time you open the app, it loads the data from localStorage.
-```
+### 1. Data Flow
+1. **Input**: User creates a Trip or adds a TODO.
+2. **Local State**: `app.js` updates the internal `appData` object.
+3. **Cloud Sync**: The app uses `Firestore` to persist data. If a Room ID exists, data is shared instantly across all devices in that room.
+4. **Offline Resilience**: Even if the connection is lost, Capacitor and browser caching help maintain basic functionality.
 
-> ⚠️ **Warning:** If you clear your browser's data, your TaviNote data will also be deleted.
+### 2. Room Sharing
+TaviNote uses the "Room ID" concept. Each room is a separate document in Firestore, containing arrays for `todos`, `packingItems`, `schedules`, etc. Using `onSnapshot`, the UI updates automatically when someone else in the room makes a change.
 
 ---
 
-## 🧩 Mechanisms by Feature
+## 🧩 Advanced Mechanics
 
-### 📍 Nearby Search (GPS)
-1. Acquires current location (latitude and longitude) using the browser's **Geolocation API**.
-2. Requests the **Overpass API** (OpenStreetMap database) to "find convenience stores within 1km around these coordinates".
-3. Displays the found locations with markers on a map using **Leaflet.js**.
+### 🌳 The Growth Engine
+The "Tree Growth" visualization is driven by percentage logic:
+- Calculation: `(Completed TODOs + Completed Packing) ÷ (Total Items) × 100`.
+- The UI listens for changes in this percentage and switches images/animations to represent different stages of growth.
 
-### 👜 Packing Checklist
-1. When a template is selected, a pre-prepared list of items is added.
-2. When checked, it changes to `checked: true`, and a strikethrough is displayed.
-3. The progress bar is calculated by `Checked items ÷ Total items × 100`.
+### 🗺️ Geospatial Integration
+- **Nominatim API**: Converts human-readable addresses into latitude/longitude.
+- **Overpass API**: Performs complex queries against OpenStreetMap data to find convenience stores or stations near your trip destination.
+- **Leaflet.js**: Handles the rendering of markers and interactive map layers.
 
-### 💰 Splitting Bills
-1. Member names have been inputted separated by commas (when creating the trip).
-2. When recording an expense, input "who paid".
-3. The app calculates automatically:
-   - `Total ÷ Number of members = Amount per person`
-   - `Amount actually paid - Amount per person = Difference`
-   - If positive, "Person to receive"; if negative, "Person to pay".
-
-### 🗳️ Polls
-1. Create a poll by entering a question and choices.
-2. Tapping a choice adds +1 to `votes`.
-3. The width of the bar chart is calculated by `Votes ÷ Total votes × 100%`.
-
-### 📄 Itinerary
-1. When the button is pressed, HTML is automatically generated from the trip data.
-2. Opens in a new window -> Output to PDF or paper using the browser's print function.
+### 📱 Native Integration (Capacitor)
+By using Ionic Capacitor, we wrap the web app in a native container.
+- **Redirection**: `index.html` detects the Capacitor environment and automatically forwards users to `app.html` for a seamless mobile experience.
+- **Permissions**: Leverages native APIs for Geolocation more reliably than standard browser APIs.
 
 ---
 
-## 🎨 Design Mechanics
+## 🎨 Design System
 
-### CSS Custom Properties
-Colors and sizes are managed as "variables":
-```css
---accent: #7CB69D;     /* Main green color */
---bg-card: #ffffff;     /* Card background */
---radius: 12px;         /* Corner roundness */
-```
-> In dark mode, simply changing the values of these variables changes the overall colors.
-
-### Animations
-The "pinning animation" on the memo board is realized with CSS `@keyframes`:
-```
-1. Memo drops from above (translateY)
-2. Shakes slightly (rotate)  
-3. Settles into its regular position
-```
+TaviNote uses a custom CSS utility system built on:
+- **CSS Variables**: Easy theme switching (Light/Dark mode) and brand color management.
+- **Glassmorphism**: Subtle blurs and semi-transparent backgrounds for a premium feel.
+- **Animations**: Using `@keyframes` for micro-interactions (e.g., subtle shakes when pinning a memo).
 
 ---
 
-## 🔰 To Those Reading Code for the First Time
+## 🔰 Code Reading Guide
 
-1. **First, read `index.html`** — Understand what buttons and screens exist.
-2. **Read the `init()` function in `app.js`** — What gets called when buttons are pressed.
-3. **Read the functions of features you're interested in** — Ex: understand how polls are displayed with `renderPolls()`.
-4. **Check the appearance in `style.css`** — Searching by class name will find the corresponding styles.
-
----
-
-## 📖 To Those Who Want to Learn More
-
-| Topic | Recommended Resources |
-|---------|---------------|
-| HTML/CSS/JS Basics | [MDN Web Docs](https://developer.mozilla.org/en-US/) |
-| Leaflet.js (Maps) | [Leaflet Official Tutorials](https://leafletjs.com/examples.html) |
-| localStorage | [MDN localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) |
-| CSS Animations | [MDN CSS Animations](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations) |
-| Geolocation API | [MDN Geolocation](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) |
+1. **Start with `app.js`**: Look for the `init()` function to see how the application wakes up.
+2. **Explore `t()`**: This is our localization function. See how it pulls strings from the `translations` object for multi-language support.
+3. **Check `fbHelpers`**: This set of functions manages the interaction with Firebase.
 
 ---
 
-Let's enjoy learning! 🎓✨
+## 📖 Recommended Learning
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [Capacitor Documentation](https://capacitorjs.com/docs)
+- [Leaflet.js Tutorials](https://leafletjs.com/examples.html)
+
+---
+
+Happy Coding! 🌍🧪

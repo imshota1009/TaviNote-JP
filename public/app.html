@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaviNote — タビノート</title>
+    <meta name="description" content="大切な人との旅行を、計画から思い出まで丸ごとまとめられるアプリ">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./icon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- ===== サイドバー ===== -->
+    <nav id="sidebar">
+        <div class="sidebar-logo">
+            <span class="logo-icon">🌿</span>
+            <span class="logo-text">TaviNote</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active" data-view="dashboard">
+                <span class="menu-icon">🏠</span>
+                <span class="menu-label" data-i18n="home">ホーム</span>
+            </li>
+            <li data-view="memo-board">
+                <span class="menu-icon">📌</span>
+                <span class="menu-label" data-i18n="memoBoard">メモボード</span>
+            </li>
+            <li data-view="search-links">
+                <span class="menu-icon">🚄</span>
+                <span class="menu-label" data-i18n="transportSearch">交通・宿検索</span>
+            </li>
+
+            <li data-view="nearby">
+                <span class="menu-icon">📍</span>
+                <span class="menu-label" data-i18n="nearbySearch">周辺検索</span>
+            </li>
+            <li data-view="collection">
+                <span class="menu-icon">🌳</span>
+                <span class="menu-label" data-i18n="collection">コレクション</span>
+            </li>
+            <div style="height: 1px; background: var(--border); margin: 12px 0;"></div>
+            <li id="btnSettings">
+                <span class="menu-icon">⚙️</span>
+                <span class="menu-label" data-i18n="settingsTitle">設定・プラン</span>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <button id="darkModeToggle" class="dark-toggle" data-i18n-title="darkModeTitle" title="ダークモード切替">
+                <span class="toggle-icon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== メインコンテンツ ===== -->
+    <main id="mainContent">
+
+        <!-- ===== ダッシュボード ===== -->
+        <section id="view-dashboard" class="view active">
+            <header class="view-header">
+                <h1 data-i18n="myTripPlans">🌿 マイ旅行プラン</h1>
+                <div style="display:flex; gap:8px;">
+                    <button id="btnOpenJoinTrip" class="btn btn-secondary">
+                        <span>🤝</span> <span data-i18n="joinTrip">ルームIDで参加</span>
+                    </button>
+                    <button id="btnNewTrip" class="btn btn-primary">
+                        <span>＋</span> <span data-i18n="newTrip">新しい旅行</span>
+                    </button>
+                </div>
+            </header>
+            <div id="tripCardsContainer" class="trip-cards-grid">
+                <!-- trip cards inserted by JS -->
+            </div>
+            <div id="emptyState" class="empty-state">
+                <div class="empty-illustration">🗺️</div>
+                <h2 data-i18n="noTripsYet">まだ旅行プランがありません</h2>
+                <p data-i18n="noTripsHint">「新しい旅行」ボタンから、最初の旅行を計画しましょう！</p>
+            </div>
+        </section>
+
+        <!-- ===== 旅行詳細ビュー ===== -->
+        <section id="view-trip-detail" class="view">
+            <header class="view-header trip-detail-header">
+                <button id="btnBackToDashboard" class="btn btn-ghost" data-i18n="back">← 戻る</button>
+                <div class="trip-title-area">
+                    <h1 id="tripDetailTitle"></h1>
+                    <div id="tripCountdown" class="countdown-badge"></div>
+                </div>
+                <div class="trip-header-actions">
+                    <button id="btnEditTrip" class="btn btn-secondary btn-sm" data-i18n="edit">✏️ 編集</button>
+                    <button id="btnDeleteTrip" class="btn btn-danger btn-sm" data-i18n="delete">🗑️ 削除</button>
+                </div>
+            </header>
+
+            <!-- サブタブナビ -->
+            <nav class="sub-tabs">
+                <button class="sub-tab active" data-tab="overview" data-i18n="overview">🌳 概要</button>
+                <button class="sub-tab" data-tab="diary" data-i18n="diary">📖 日記</button>
+                <button class="sub-tab" data-tab="places" data-i18n="places">📍 場所</button>
+                <button class="sub-tab" data-tab="todo" data-i18n="todo">✅ TODO</button>
+                <button class="sub-tab" data-tab="schedule" data-i18n="schedule">🕐 スケジュール</button>
+                <button class="sub-tab" data-tab="tickets" data-i18n="tickets">🎫 チケット</button>
+                <button class="sub-tab" data-tab="packing" data-i18n="packing">👜 持ち物</button>
+                <button class="sub-tab" data-tab="money" data-i18n="money">💰 お金</button>
+                <button class="sub-tab" data-tab="vote" data-i18n="vote">🗳️ 投票</button>
+                <button class="sub-tab" data-tab="photos" data-i18n="photos">📸 写真</button>
+                <button class="sub-tab" data-tab="review" data-i18n="review">📊 振り返り</button>
+            </nav>
+
+            <!-- ① 概要タブ -->
+            <div class="tab-content active" data-tab-content="overview">
+                <div class="overview-grid">
+                    <!-- 木の成長 -->
+                    <div class="card tree-card">
+                        <h3 data-i18n="prepProgress">🌳 準備の進み具合</h3>
+                        <div id="treeContainer" class="tree-container">
+                            <div id="treeVisual" class="tree-visual"></div>
+                            <div id="treeProgress" class="tree-progress-text"></div>
+                            <div id="treeMessage" class="tree-message"></div>
+                        </div>
+                    </div>
+                    <!-- 旅行情報 -->
+                    <div class="card info-card">
+                        <h3 data-i18n="tripInfo">📋 旅行の情報</h3>
+                        <div id="tripInfoContent" class="trip-info-content"></div>
+                        <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
+                            <button id="btnExportShiori" class="btn btn-secondary btn-sm" data-i18n="createShiori">📄
+                                しおりを作る</button>
+                            <button id="btnShareTrip" class="btn btn-primary btn-sm" data-i18n="shareTripBtn">👤
+                                メンバーを招待</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- リマインダー -->
+                <div class="card" style="margin-top:20px;">
+                    <h3 data-i18n="reminder">⏰ リマインダー</h3>
+                    <div id="reminderList" class="reminder-list"></div>
+                    <button id="btnNewReminder" class="btn btn-primary btn-sm" style="margin-top:12px;"
+                        data-i18n="addReminder">＋
+                        リマインダー追加</button>
+                </div>
+            </div>
+
+            <!-- ② 日記タブ -->
+            <div class="tab-content" data-tab-content="diary">
+                <div class="diary-header">
+                    <h3 data-i18n="travelDiary">📖 旅行日記</h3>
+                    <button id="btnNewDiary" class="btn btn-primary btn-sm" data-i18n="writeDiary">＋ 日記を書く</button>
+                </div>
+                <div id="diaryEntries" class="diary-entries"></div>
+            </div>
+
+            <!-- ③ 場所タブ -->
+            <div class="tab-content" data-tab-content="places">
+                <div class="places-layout">
+                    <div class="places-list-area">
+                        <div class="places-header">
+                            <h3 data-i18n="wantToGo">📍 行きたい場所</h3>
+                            <button id="btnNewPlace" class="btn btn-primary btn-sm" data-i18n="addPlace">＋
+                                場所を追加</button>
+                        </div>
+                        <div class="places-filter">
+                            <button class="filter-btn active" data-category="all" data-i18n="all">すべて</button>
+                            <button class="filter-btn" data-category="food" data-i18n="food">🍽️ 食事</button>
+                            <button class="filter-btn" data-category="sightseeing" data-i18n="sightseeing">🏛️
+                                観光</button>
+                            <button class="filter-btn" data-category="hotel" data-i18n="hotel">🏨 宿泊</button>
+                            <button class="filter-btn" data-category="shopping" data-i18n="shopping">🛍️ 買い物</button>
+                            <button class="filter-btn" data-category="other" data-i18n="other">📌 その他</button>
+                        </div>
+                        <div id="placesList" class="places-list"></div>
+                    </div>
+                    <div class="map-area">
+                        <div id="placesMap" class="map-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ④ TODOタブ -->
+            <div class="tab-content" data-tab-content="todo">
+                <div class="todo-layout">
+                    <div class="todo-list-area">
+                        <div class="todo-header">
+                            <h3 data-i18n="todoList">✅ やることリスト</h3>
+                            <button id="btnNewTodo" class="btn btn-primary btn-sm" data-i18n="add">＋ 追加</button>
+                        </div>
+                        <div id="todoList" class="todo-list"></div>
+                    </div>
+                    <div class="calendar-area">
+                        <div class="calendar-header">
+                            <button id="calendarPrev" class="btn btn-ghost btn-sm">◀</button>
+                            <h3 id="calendarTitle"></h3>
+                            <button id="calendarNext" class="btn btn-ghost btn-sm">▶</button>
+                        </div>
+                        <div id="calendarGrid" class="calendar-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ⑤ スケジュールタブ -->
+            <div class="tab-content" data-tab-content="schedule">
+                <div class="schedule-header">
+                    <h3 data-i18n="dailySchedule">🕐 1日のスケジュール</h3>
+                    <div class="schedule-day-selector">
+                        <button id="schedulePrevDay" class="btn btn-ghost btn-sm">◀</button>
+                        <span id="scheduleCurrentDay" class="schedule-day-label"></span>
+                        <button id="scheduleNextDay" class="btn btn-ghost btn-sm">▶</button>
+                    </div>
+                    <button id="btnNewScheduleItem" class="btn btn-primary btn-sm" data-i18n="addSchedule">＋
+                        予定追加</button>
+                </div>
+                <div id="scheduleTimeline" class="schedule-timeline"></div>
+            </div>
+
+            <!-- ⑥ チケット管理タブ -->
+            <div class="tab-content" data-tab-content="tickets">
+                <div class="diary-header">
+                    <h3 data-i18n="ticketManage">🎫 チケット・予約管理</h3>
+                    <button id="btnNewTicket" class="btn btn-primary btn-sm" data-i18n="addTicket">＋ チケット追加</button>
+                </div>
+                <div id="ticketList" class="ticket-list"></div>
+            </div>
+
+            <!-- ⑦ 持ち物リストタブ -->
+            <div class="tab-content" data-tab-content="packing">
+                <div class="diary-header">
+                    <h3 data-i18n="packingList">👜 持ち物チェックリスト</h3>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <select id="selectPackingTemplate" class="form-select-inline">
+                            <option value="" data-i18n="selectTemplate">テンプレートを選ぶ</option>
+                            <option value="domestic" data-i18n="domestic">🏯 国内旅行</option>
+                            <option value="overseas" data-i18n="overseas">✈️ 海外旅行</option>
+                            <option value="daytrip" data-i18n="daytrip">🚶 日帰り</option>
+                            <option value="camp" data-i18n="camp">⛺ キャンプ</option>
+                        </select>
+                        <button id="btnApplyPackingTemplate" class="btn btn-secondary btn-sm"
+                            data-i18n="applyTemplate">テンプレ適用</button>
+                        <button id="btnNewPackingItem" class="btn btn-primary btn-sm" data-i18n="add">＋ 追加</button>
+                    </div>
+                </div>
+                <div id="packingProgress" class="packing-progress"></div>
+                <div id="packingList" class="packing-list"></div>
+            </div>
+
+            <!-- ⑧ お金管理タブ -->
+            <div class="tab-content" data-tab-content="money">
+                <!-- 予算シミュレーション -->
+                <div class="card" style="margin-bottom:20px;">
+                    <h3 data-i18n="budgetSim">📊 予算シミュレーション</h3>
+                    <div id="budgetSummary" class="budget-summary"></div>
+                </div>
+                <!-- 支出記録 -->
+                <div class="diary-header">
+                    <h3 data-i18n="expenseRecord">💰 支出の記録</h3>
+                    <button id="btnNewExpense" class="btn btn-primary btn-sm" data-i18n="addExpense">＋ 支出追加</button>
+                </div>
+                <div id="expenseList" class="expense-list"></div>
+                <div id="splitResult" class="split-result"></div>
+            </div>
+
+            <!-- ⑨ 投票タブ -->
+            <div class="tab-content" data-tab-content="vote">
+                <div class="diary-header">
+                    <h3 data-i18n="voteTitle">🗳️ みんなで投票</h3>
+                    <button id="btnNewPoll" class="btn btn-primary btn-sm" data-i18n="createVote">＋ 投票を作る</button>
+                </div>
+                <div id="pollList" class="poll-list"></div>
+            </div>
+
+            <!-- ⑩ フォトギャラリータブ -->
+            <div class="tab-content" data-tab-content="photos">
+                <div class="diary-header">
+                    <h3 data-i18n="photosTitle">📸 フォトギャラリー</h3>
+                    <button id="btnAddPhoto" class="btn btn-primary btn-sm" data-i18n="addPhotoBtn">＋ 写真を追加</button>
+                    <input type="file" id="photoFileInput" accept="image/*" multiple style="display:none" />
+                </div>
+                <div id="photoGallery" class="photo-gallery"></div>
+            </div>
+
+            <!-- ⑪ 旅の振り返りタブ -->
+            <div class="tab-content" data-tab-content="review">
+                <div class="card" style="max-width:600px;">
+                    <h3 data-i18n="reviewTitle">📊 旅の振り返り</h3>
+                    <div class="form-group" style="margin-top:16px;">
+                        <label data-i18n="reviewRating">旅行の満足度</label>
+                        <div id="reviewStars" class="review-stars">
+                            <span class="star" data-star="1">☆</span>
+                            <span class="star" data-star="2">☆</span>
+                            <span class="star" data-star="3">☆</span>
+                            <span class="star" data-star="4">☆</span>
+                            <span class="star" data-star="5">☆</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="reviewBest">一番の思い出</label>
+                        <textarea id="reviewBestMemory" rows="3" data-i18n-placeholder="reviewBestHint"
+                            placeholder="旅行で一番楽しかったことは？"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="reviewImprove">次回はこうしたい</label>
+                        <textarea id="reviewImprove" rows="3" data-i18n-placeholder="reviewImproveHint"
+                            placeholder="次の旅行で改善したいことは？"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="reviewNote">自由メモ</label>
+                        <textarea id="reviewNote" rows="3" data-i18n-placeholder="reviewNoteHint"
+                            placeholder="旅行の感想を自由に書こう"></textarea>
+                    </div>
+                    <button id="btnSaveReview" class="btn btn-primary" style="width:100%;"
+                        data-i18n="reviewSave">振り返りを保存</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== メモボード ===== -->
+        <section id="view-memo-board" class="view">
+            <header class="view-header">
+                <h1 data-i18n="memoBoardTitle">📌 メモボード</h1>
+                <button id="btnNewMemo" class="btn btn-primary" data-i18n="addMemo">＋ メモを追加</button>
+            </header>
+            <div id="memoBoard" class="memo-board">
+                <div class="board-wood-grain"></div>
+                <div id="memoNotes" class="memo-notes">
+                    <!-- memo notes inserted by JS -->
+                </div>
+                <div id="memoBoardEmpty" class="memo-board-empty" data-i18n="memoBoardEmpty">
+                    📌 ボードにメモを貼ってみよう！
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 交通・宿検索ビュー ===== -->
+        <section id="view-search-links" class="view">
+            <header class="view-header">
+                <h1 data-i18n="transportTitle">🚄 交通・宿・おでかけ検索</h1>
+            </header>
+            <div class="search-links-grid">
+                <!-- 新幹線予約 -->
+                <div class="card search-card">
+                    <h3 data-i18n="shinkansenTitle">🎫 新幹線・特急の予約</h3>
+                    <p data-i18n="shinkansenDesc">きっぷのネット予約はこちら</p>
+                    <div class="search-links-btns">
+                        <a href="https://www.eki-net.com/" target="_blank" class="btn btn-link"
+                            data-i18n="ekinet">えきねっと（JR東日本）</a>
+                        <a href="https://smart-ex.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="smartex">スマートEX（東海道・山陽）</a>
+                        <a href="https://www.jr-odekake.net/goyoyaku/" target="_blank" class="btn btn-link"
+                            data-i18n="e5489">e5489（JR西日本）</a>
+                        <a href="https://www.jrkyushu.co.jp/train/reserve/" target="_blank" class="btn btn-link"
+                            data-i18n="jrkyushu">JR九州ネット予約</a>
+                    </div>
+                </div>
+                <!-- 乗り換え -->
+                <div class="card search-card">
+                    <h3 data-i18n="transferTitle">🚃 乗り換え・路線検索</h3>
+                    <p data-i18n="transferDesc">電車の時刻や乗り換えを調べる</p>
+                    <div class="search-links-btns">
+                        <a href="https://transit.yahoo.co.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="yahooTransit">Yahoo!路線情報</a>
+                        <a href="https://www.jorudan.co.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="jorudan">ジョルダン</a>
+                        <a href="https://www.navitime.co.jp/" target="_blank" class="btn btn-link">NAVITIME</a>
+                        <a href="https://ekitan.com/" target="_blank" class="btn btn-link" data-i18n="ekitan">えきたん</a>
+                    </div>
+                </div>
+                <!-- 高速バス -->
+                <div class="card search-card">
+                    <h3 data-i18n="busTitle">🚌 高速バス</h3>
+                    <p data-i18n="busDesc">安く移動するなら高速バス</p>
+                    <div class="search-links-btns">
+                        <a href="https://travel.willer.co.jp/" target="_blank" class="btn btn-link">WILLER EXPRESS</a>
+                        <a href="https://www.bushikaku.net/" target="_blank" class="btn btn-link"
+                            data-i18n="busHikaku">バス比較なび</a>
+                        <a href="https://www.kosokubus.com/" target="_blank" class="btn btn-link"
+                            data-i18n="kosokubus">高速バスドットコム</a>
+                    </div>
+                </div>
+                <!-- 飛行機 -->
+                <div class="card search-card">
+                    <h3 data-i18n="flightTitle">✈️ 飛行機</h3>
+                    <p data-i18n="flightDesc">航空券を探す</p>
+                    <div class="search-links-btns">
+                        <a href="https://www.skyscanner.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="skyscanner">スカイスキャナー</a>
+                        <a href="https://www.google.com/travel/flights" target="_blank" class="btn btn-link"
+                            data-i18n="googleFlights">Google
+                            フライト</a>
+                        <a href="https://www.traicy.com/" target="_blank" class="btn btn-link"
+                            data-i18n="traveljp">トラベルjp</a>
+                    </div>
+                </div>
+                <!-- レンタカー -->
+                <div class="card search-card">
+                    <h3 data-i18n="rentalCarTitle">🚗 レンタカー</h3>
+                    <p data-i18n="rentalCarDesc">車を借りて自由にドライブ</p>
+                    <div class="search-links-btns">
+                        <a href="https://www.nipponrentacar.co.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="nipponRentacar">ニッポンレンタカー</a>
+                        <a href="https://rental.timescar.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="timescar">タイムズカーレンタル</a>
+                        <a href="https://skyticket.jp/rentacar/" target="_blank" class="btn btn-link"
+                            data-i18n="skyticketCar">スカイチケット</a>
+                    </div>
+                </div>
+                <!-- 旅館・ホテル -->
+                <div class="card search-card">
+                    <h3 data-i18n="hotelTitle">🏨 旅館・ホテル</h3>
+                    <p data-i18n="hotelDesc">宿泊先を探す</p>
+                    <div class="search-links-btns">
+                        <a href="https://www.jalan.net/" target="_blank" class="btn btn-link" data-i18n="jalan">じゃらん</a>
+                        <a href="https://travel.rakuten.co.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="rakutenTravel">楽天トラベル</a>
+                        <a href="https://www.booking.com/" target="_blank" class="btn btn-link">Booking.com</a>
+                        <a href="https://www.ikyu.com/" target="_blank" class="btn btn-link" data-i18n="ikyu">一休.com</a>
+                        <a href="https://www.airbnb.jp/" target="_blank" class="btn btn-link">Airbnb</a>
+                    </div>
+                </div>
+                <!-- グルメ -->
+                <div class="card search-card">
+                    <h3 data-i18n="gourmetTitle">🍽️ グルメ・レストラン</h3>
+                    <p data-i18n="gourmetDesc">現地のおいしいお店を探す</p>
+                    <div class="search-links-btns">
+                        <a href="https://tabelog.com/" target="_blank" class="btn btn-link" data-i18n="tabelog">食べログ</a>
+                        <a href="https://www.hotpepper.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="hotpepper">ホットペッパーグルメ</a>
+                        <a href="https://retty.me/" target="_blank" class="btn btn-link">Retty</a>
+                        <a href="https://www.google.com/maps" target="_blank" class="btn btn-link">Google Maps</a>
+                    </div>
+                </div>
+                <!-- 観光スポット -->
+                <div class="card search-card">
+                    <h3 data-i18n="touristTitle">🏛️ 観光スポット・体験</h3>
+                    <p data-i18n="touristDesc">遊び場や観光地を探す</p>
+                    <div class="search-links-btns">
+                        <a href="https://www.jalan.net/kankou/" target="_blank" class="btn btn-link"
+                            data-i18n="jalanKankou">じゃらん観光ガイド</a>
+                        <a href="https://www.asoview.com/" target="_blank" class="btn btn-link"
+                            data-i18n="asoview">アソビュー！</a>
+                        <a href="https://www.tripadvisor.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="tripadvisor">トリップアドバイザー</a>
+                    </div>
+                </div>
+                <!-- 地図 -->
+                <div class="card search-card">
+                    <h3 data-i18n="mapTitle">🗺️ 地図・ルート</h3>
+                    <p data-i18n="mapDesc">ルートや周辺を確認する</p>
+                    <div class="search-links-btns">
+                        <a href="https://www.google.com/maps" target="_blank" class="btn btn-link"
+                            data-i18n="googleMap">Google マップ</a>
+                        <a href="https://map.yahoo.co.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="yahooMap">Yahoo!地図</a>
+                    </div>
+                </div>
+                <!-- 天気 -->
+                <div class="card search-card">
+                    <h3 data-i18n="weatherTitle">☀️ 天気予報</h3>
+                    <p data-i18n="weatherDesc">旅行先のお天気をチェック</p>
+                    <div class="search-links-btns">
+                        <a href="https://tenki.jp/" target="_blank" class="btn btn-link">tenki.jp</a>
+                        <a href="https://weathernews.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="weathernews">ウェザーニュース</a>
+                    </div>
+                </div>
+                <!-- 旅行保険・Wi-Fi -->
+                <div class="card search-card">
+                    <h3 data-i18n="prepTitle">🛡️ 旅の準備</h3>
+                    <p data-i18n="prepDesc">保険やWi-Fiレンタルなど</p>
+                    <div class="search-links-btns">
+                        <a href="https://www.tokiomarine-nichido.co.jp/service/travel/" target="_blank"
+                            class="btn btn-link" data-i18n="travelInsurance">海外旅行保険</a>
+                        <a href="https://townwifi.com/" target="_blank" class="btn btn-link"
+                            data-i18n="globalWifi">グローバルWiFi</a>
+                        <a href="https://wifi.iijmio.jp/" target="_blank" class="btn btn-link"
+                            data-i18n="iijmioSim">IIJmio海外SIM</a>
+                    </div>
+                </div>
+                <!-- 検索メモ -->
+                <div class="card search-card">
+                    <h3 data-i18n="searchMemoTitle">🗒️ 検索メモ</h3>
+                    <p data-i18n="searchMemoDesc">調べた内容をメモしておこう</p>
+                    <textarea id="searchMemo" class="search-memo" data-i18n-placeholder="exSearchMemo"
+                        placeholder="例：東京→大阪 のぞみ 13:00発 えきねっとで予約済み 15,000円"></textarea>
+                    <button id="btnSaveSearchMemo" class="btn btn-secondary btn-sm" style="margin-top:8px;"
+                        data-i18n="saveSearchMemo">メモを保存</button>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- ===== 周辺検索ビュー ===== -->
+        <section id="view-nearby" class="view">
+            <header class="view-header">
+                <h1 data-i18n="nearbyTitle">📍 周辺検索</h1>
+            </header>
+            <div class="nearby-search">
+                <div class="card" style="margin-bottom:16px;">
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                        <button id="btnGetLocation" class="btn btn-primary" data-i18n="getLocation">📍 現在地を取得</button>
+                        <span id="nearbyStatus" style="color:var(--text-muted);font-size:13px;"
+                            data-i18n="locationHint">位置情報を取得してください</span>
+                    </div>
+                    <div class="nearby-categories" style="margin-top:12px;">
+                        <button class="filter-btn active" data-nearby="convenience" data-i18n="nearbyConvenience">🏪
+                            コンビニ</button>
+                        <button class="filter-btn" data-nearby="station" data-i18n="nearbyStation">🚉 駅</button>
+                        <button class="filter-btn" data-nearby="restaurant" data-i18n="nearbyRestaurant">🍽️ 食事</button>
+                        <button class="filter-btn" data-nearby="cafe" data-i18n="nearbyCafe">☕ カフェ</button>
+                        <button class="filter-btn" data-nearby="hospital" data-i18n="nearbyHospital">🏥 病院</button>
+                        <button class="filter-btn" data-nearby="atm" data-i18n="nearbyAtm">🏧 ATM</button>
+                        <button class="filter-btn" data-nearby="toilet" data-i18n="nearbyToilet">🚻 トイレ</button>
+                    </div>
+                </div>
+                <div id="nearbyMap"
+                    style="height:400px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);">
+                </div>
+                <div id="nearbyResults" class="nearby-results" style="margin-top:16px;"></div>
+            </div>
+        </section>
+
+        <!-- ===== TaviForest (コレクション) ビュー ===== -->
+        <section id="view-collection" class="view">
+            <header class="view-header">
+                <h1 data-i18n="collectionTitle">🌳 コレクション</h1>
+            </header>
+            <div class="collection-intro">
+                <p data-i18n="collectionDesc">これまでに100%まで育てた木たちです。旅行の思い出と一緒に、あなただけの森をつくりましょう！</p>
+            </div>
+            <div id="collectionGrid" class="collection-grid">
+                <!-- JSでコレクションアイテムを流し込む -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== モーダル: 新規旅行作成 ===== -->
+    <div id="modalNewTrip" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="planTrip">🗺️ 新しい旅行を計画</h2>
+                <button class="modal-close" data-close="modalNewTrip">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="tripName">旅行の名前</label>
+                    <input type="text" id="inputTripName" data-i18n-placeholder="exTripName"
+                        placeholder="例：沖縄旅行 2026年夏" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="departure">出発日</label>
+                    <input type="date" id="inputTripDate" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="returnDate">帰宅日</label>
+                    <input type="date" id="inputTripEndDate" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="companions">一緒に行く人</label>
+                    <input type="text" id="inputTripMembers" data-i18n-placeholder="exCompanions"
+                        placeholder="例：家族、彼女、友達" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="budgetMemo">予算メモ</label>
+                    <input type="text" id="inputTripBudget" data-i18n-placeholder="exBudget" placeholder="例：10万円くらい" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="prefectureLabel">行き先（都道府県）</label>
+                    <select id="selectTripPrefecture">
+                        <option value="" data-i18n="notSet">未定 / 海外 / その他</option>
+                        <option value="北海道">北海道</option>
+                        <option value="青森県">青森県</option>
+                        <option value="岩手県">岩手県</option>
+                        <option value="宮城県">宮城県</option>
+                        <option value="秋田県">秋田県</option>
+                        <option value="山形県">山形県</option>
+                        <option value="福島県">福島県</option>
+                        <option value="茨城県">茨城県</option>
+                        <option value="栃木県">栃木県</option>
+                        <option value="群馬県">群馬県</option>
+                        <option value="埼玉県">埼玉県</option>
+                        <option value="千葉県">千葉県</option>
+                        <option value="東京都">東京都</option>
+                        <option value="神奈川県">神奈川県</option>
+                        <option value="新潟県">新潟県</option>
+                        <option value="富山県">富山県</option>
+                        <option value="石川県">石川県</option>
+                        <option value="福井県">福井県</option>
+                        <option value="山梨県">山梨県</option>
+                        <option value="長野県">長野県</option>
+                        <option value="岐阜県">岐阜県</option>
+                        <option value="静岡県">静岡県</option>
+                        <option value="愛知県">愛知県</option>
+                        <option value="三重県">三重県</option>
+                        <option value="滋賀県">滋賀県</option>
+                        <option value="京都府">京都府</option>
+                        <option value="大阪府">大阪府</option>
+                        <option value="兵庫県">兵庫県</option>
+                        <option value="奈良県">奈良県</option>
+                        <option value="和歌山県">和歌山県</option>
+                        <option value="鳥取県">鳥取県</option>
+                        <option value="島根県">島根県</option>
+                        <option value="岡山県">岡山県</option>
+                        <option value="広島県">広島県</option>
+                        <option value="山口県">山口県</option>
+                        <option value="徳島県">徳島県</option>
+                        <option value="香川県">香川県</option>
+                        <option value="愛媛県">愛媛県</option>
+                        <option value="高知県">高知県</option>
+                        <option value="福岡県">福岡県</option>
+                        <option value="佐賀県">佐賀県</option>
+                        <option value="長崎県">長崎県</option>
+                        <option value="熊本県">熊本県</option>
+                        <option value="大分県">大分県</option>
+                        <option value="宮崎県">宮崎県</option>
+                        <option value="鹿児島県">鹿児島県</option>
+                        <option value="沖縄県">沖縄県</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="treeType">木の種類（成長アニメーション）</label>
+                    <select id="selectTreeType">
+                        <option value="tree" data-i18n="treeStandard">標準の木</option>
+                        <option value="fall_foliage" data-i18n="treeFallFoliage">紅葉 (秋)</option>
+                        <option value="palm_tree" data-i18n="treePalm">ヤシの木 (南国)</option>
+                        <option value="winter_onsen_tree" data-i18n="treeWinter">冬の温泉</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="template">テンプレート</label>
+                    <select id="selectTemplate">
+                        <option value="none" data-i18n="dontUse">使わない</option>
+                        <option value="domestic" data-i18n="domesticTrip">国内旅行</option>
+                        <option value="overseas" data-i18n="overseasTrip">海外旅行</option>
+                        <option value="daytrip" data-i18n="daytripTrip">日帰り</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalNewTrip" data-i18n="cancel">キャンセル</button>
+                <button id="btnCreateTrip" class="btn btn-primary" data-i18n="createTrip">旅行を作成</button>
+            </div>
+            <!-- ===== モーダル: ルームIDで参加 ===== -->
+        </div>
+    </div>
+
+    <div id="modalJoinTrip" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="joinTripTitle">🤝 ルームIDで参加</h2>
+                <button class="modal-close" data-close="modalJoinTrip">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="roomIdLabel">ルームID</label>
+                    <input type="text" id="inputRoomId" data-i18n-placeholder="exRoomId"
+                        placeholder="例: m0x3jk2a4z9b" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalJoinTrip" data-i18n="cancel">キャンセル</button>
+                <button id="btnJoinTrip" class="btn btn-primary" data-i18n="join">参加する</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: 共有 ===== -->
+    <div id="modalShare" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="shareTripTitle">🤝 メンバーを招待</h2>
+                <button class="modal-close" data-close="modalShare">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="roomIdShareLabel">この旅行のルームID</label>
+                    <div style="display:flex; gap:8px;">
+                        <input type="text" id="displayRoomId" readonly style="flex:1;" />
+                        <button id="btnCopyRoomId" class="btn btn-secondary" style="flex-shrink:0;">📋 コピー</button>
+                    </div>
+                    <p style="font-size:0.85em; color:#666; margin-top:4px;" data-i18n="roomIdHint">
+                        「ルームIDで参加」に入力して参加してもらえます。</p>
+                </div>
+                <div class="form-group" style="margin-top:16px;">
+                    <label data-i18n="shareLinkLabel">招待リンク (URL)</label>
+                    <div style="display:flex; gap:8px;">
+                        <input type="text" id="displayShareLink" readonly style="flex:1;" />
+                        <button id="btnCopyShareLink" class="btn btn-secondary" style="flex-shrink:0;">📋 コピー</button>
+                    </div>
+                    <p style="font-size:0.85em; color:#666; margin-top:4px;" data-i18n="shareLinkHint">リンクを開くだけで参加できます。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: 日記作成 ===== -->
+    <div id="modalDiary" class="modal-overlay">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <h2 data-i18n="writeDiaryTitle">📖 日記を書く</h2>
+                <button class="modal-close" data-close="modalDiary">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="date">日付</label>
+                    <input type="date" id="inputDiaryDate" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="title">タイトル</label>
+                    <input type="text" id="inputDiaryTitle" data-i18n-placeholder="exDiaryTitle"
+                        placeholder="例：初日の観光！" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="diaryContent">日記の内容</label>
+                    <textarea id="inputDiaryContent" rows="8" data-i18n-placeholder="exDiaryContent"
+                        placeholder="今日の出来事を書いてみよう..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="addPhoto">写真を追加</label>
+                    <input type="file" id="inputDiaryPhoto" accept="image/*" />
+                    <div id="diaryPhotoPreview" class="photo-preview"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalDiary" data-i18n="cancel">キャンセル</button>
+                <button id="btnSaveDiary" class="btn btn-primary" data-i18n="saveBtn">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: 場所追加 ===== -->
+    <div id="modalPlace" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="addPlaceTitle">📍 行きたい場所を追加</h2>
+                <button class="modal-close" data-close="modalPlace">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="placeName">場所の名前</label>
+                    <input type="text" id="inputPlaceName" data-i18n-placeholder="exPlaceName" placeholder="例：美ら海水族館" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="category">カテゴリ</label>
+                    <select id="selectPlaceCategory">
+                        <option value="sightseeing" data-i18n="sightseeing">🏛️ 観光</option>
+                        <option value="food" data-i18n="food">🍽️ 食事</option>
+                        <option value="hotel" data-i18n="hotel">🏨 宿泊</option>
+                        <option value="shopping" data-i18n="shopping">🛍️ 買い物</option>
+                        <option value="other" data-i18n="other">📌 その他</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="memo">メモ</label>
+                    <textarea id="inputPlaceMemo" rows="3" data-i18n-placeholder="exPlaceMemo"
+                        placeholder="例：入場料1,800円、10時オープン"></textarea>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="searchByAddress">住所で検索（地図にピン表示）</label>
+                    <div class="search-input-row">
+                        <input type="text" id="inputPlaceAddress" data-i18n-placeholder="exAddress"
+                            placeholder="例：沖縄県国頭郡本部町" />
+                        <button id="btnSearchAddress" class="btn btn-secondary btn-sm">検索</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="latLng">緯度 / 経度（地図検索で自動入力）</label>
+                    <div class="latlng-row">
+                        <input type="number" id="inputPlaceLat" data-i18n-placeholder="latPlaceholder" placeholder="緯度"
+                            step="any" />
+                        <input type="number" id="inputPlaceLng" data-i18n-placeholder="lngPlaceholder" placeholder="経度"
+                            step="any" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalPlace" data-i18n="cancel">キャンセル</button>
+                <button id="btnSavePlace" class="btn btn-primary" data-i18n="addBtn">追加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: TODO追加 ===== -->
+    <div id="modalTodo" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="addTodoTitle">✅ やることを追加</h2>
+                <button class="modal-close" data-close="modalTodo">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="todoContent">やること</label>
+                    <input type="text" id="inputTodoText" data-i18n-placeholder="exTodo" placeholder="例：ホテルを予約する" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="deadline">期限日</label>
+                    <input type="date" id="inputTodoDeadline" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="priority">優先度</label>
+                    <select id="selectTodoPriority">
+                        <option value="low" data-i18n="low">🟢 低い</option>
+                        <option value="medium" selected data-i18n="normal">🟡 ふつう</option>
+                        <option value="high" data-i18n="high">🔴 高い</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalTodo" data-i18n="cancel">キャンセル</button>
+                <button id="btnSaveTodo" class="btn btn-primary" data-i18n="save">追加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: スケジュール追加 ===== -->
+    <div id="modalSchedule" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="addScheduleTitle">🕐 予定を追加</h2>
+                <button class="modal-close" data-close="modalSchedule">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="scheduleContent">予定の内容</label>
+                    <input type="text" id="inputScheduleText" data-i18n-placeholder="exScheduleContent"
+                        placeholder="例：美ら海水族館を見学" />
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="startTime">開始時間</label>
+                        <input type="time" id="inputScheduleStart" />
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="endTime">終了時間</label>
+                        <input type="time" id="inputScheduleEnd" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="memo">メモ</label>
+                    <textarea id="inputScheduleMemo" rows="2" data-i18n-placeholder="exScheduleMemo"
+                        placeholder="例：入場券はネットで事前購入"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalSchedule" data-i18n="cancel">キャンセル</button>
+                <button id="btnSaveSchedule" class="btn btn-primary" data-i18n="save">追加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: 旅行編集 ===== -->
+    <div id="modalEditTrip" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="editTripInfo">✏️ 旅行情報を編集</h2>
+                <button class="modal-close" data-close="modalEditTrip">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="tripName">旅行の名前</label>
+                    <input type="text" id="editTripName" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="departure">出発日</label>
+                    <input type="date" id="editTripDate" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="returnDate">帰宅日</label>
+                    <input type="date" id="editTripEndDate" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="companions">一緒に行く人</label>
+                    <input type="text" id="editTripMembers" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="budgetMemo">予算メモ</label>
+                    <input type="text" id="editTripBudget" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="treeType">木の種類（成長アニメーション）</label>
+                    <select id="editTreeType">
+                        <option value="tree" data-i18n="treeStandard">標準の木</option>
+                        <option value="fall_foliage" data-i18n="treeFallFoliage">紅葉 (秋)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalEditTrip" data-i18n="cancel">キャンセル</button>
+                <button id="btnUpdateTrip" class="btn btn-primary" data-i18n="updateBtn">更新</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: メモ追加 ===== -->
+    <div id="modalMemo" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="addMemoTitle">📌 メモを追加</h2>
+                <button class="modal-close" data-close="modalMemo">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="memoContent">メモの内容</label>
+                    <textarea id="inputMemoText" rows="4" data-i18n-placeholder="exMemoContent"
+                        placeholder="例：お土産はちんすこうを買う！"></textarea>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="memoColor">メモの色</label>
+                    <div class="memo-color-picker">
+                        <label class="color-option"><input type="radio" name="memoColor" value="yellow" checked><span
+                                class="color-swatch" style="background:#FFF9C4"></span></label>
+                        <label class="color-option"><input type="radio" name="memoColor" value="pink"><span
+                                class="color-swatch" style="background:#F8BBD0"></span></label>
+                        <label class="color-option"><input type="radio" name="memoColor" value="blue"><span
+                                class="color-swatch" style="background:#B3E5FC"></span></label>
+                        <label class="color-option"><input type="radio" name="memoColor" value="green"><span
+                                class="color-swatch" style="background:#C8E6C9"></span></label>
+                        <label class="color-option"><input type="radio" name="memoColor" value="orange"><span
+                                class="color-swatch" style="background:#FFE0B2"></span></label>
+                        <label class="color-option"><input type="radio" name="memoColor" value="purple"><span
+                                class="color-swatch" style="background:#E1BEE7"></span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalMemo" data-i18n="cancel">キャンセル</button>
+                <button id="btnSaveMemo" class="btn btn-primary" data-i18n="pinMemo">貼り付ける 📌</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: チケット追加 ===== -->
+    <div id="modalTicket" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="addTicketTitle">🎫 チケットを追加</h2>
+                <button class="modal-close" data-close="modalTicket">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="ticketType">種類</label>
+                    <select id="selectTicketType">
+                        <option value="train" data-i18n="trainTicket">🚄 新幹線・電車</option>
+                        <option value="flight" data-i18n="flightTicket">✈️ 飛行機</option>
+                        <option value="hotel" data-i18n="hotelTicket">🏨 ホテル</option>
+                        <option value="ryokan" data-i18n="ryokanTicket">🏯 旅館</option>
+                        <option value="event" data-i18n="eventTicket">🎫 イベント</option>
+                        <option value="other" data-i18n="otherTicket">📋 その他</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="ticketTitle">タイトル</label>
+                    <input type="text" id="inputTicketTitle" data-i18n-placeholder="exTicketTitle"
+                        placeholder="例：東京→大阪 のぞみ" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="reservationCode">予約番号・確認番号</label>
+                    <input type="text" id="inputTicketCode" data-i18n-placeholder="exReservationCode"
+                        placeholder="例：ABC-12345" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="date">日付</label>
+                    <input type="date" id="inputTicketDate" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="ticketMemo">メモ</label>
+                    <textarea id="inputTicketMemo" rows="2" data-i18n-placeholder="exTicketMemo"
+                        placeholder="座席番号、注意事項など"></textarea>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="qrImage">QR画像（任意）</label>
+                    <input type="file" id="inputTicketImage" accept="image/*" />
+                    <div id="ticketImagePreview" class="photo-preview"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalTicket" data-i18n="cancel">キャンセル</button>
+                <button id="btnSaveTicket" class="btn btn-primary" data-i18n="saveBtn">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: 持ち物追加 ===== -->
+    <div id="modalPackingItem" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="addPackingTitle">👜 持ち物を追加</h2>
+                <button class="modal-close" data-close="modalPackingItem">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="itemName">アイテム名</label>
+                    <input type="text" id="inputPackingItem" data-i18n-placeholder="exPackingItem"
+                        placeholder="例：パスポート" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="category">カテゴリ</label>
+                    <select id="selectPackingCategory">
+                        <option value="貴重品" data-i18n="valuables">💳 貴重品</option>
+                        <option value="衣類" data-i18n="clothes">👕 衣類</option>
+                        <option value="洗面用具" data-i18n="toiletries">🪥 洗面用具</option>
+                        <option value="電子機器" data-i18n="electronics">📱 電子機器</option>
+                        <option value="薬" data-i18n="medicine">💊 薬・救急</option>
+                        <option value="その他" data-i18n="otherCat">📦 その他</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalPackingItem" data-i18n="cancel">キャンセル</button>
+                <button id="btnSavePackingItem" class="btn btn-primary" data-i18n="save">追加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: 支出追加 ===== -->
+    <div id="modalExpense" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="recordExpense">💰 支出を記録</h2>
+                <button class="modal-close" data-close="modalExpense">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="whatSpent">何に使った？</label>
+                    <input type="text" id="inputExpenseTitle" data-i18n-placeholder="exExpenseTitle"
+                        placeholder="例：ランチ代" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="amountYen">金額（円）</label>
+                    <input type="number" id="inputExpenseAmount" placeholder="1500" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="expenseCategory">カテゴリ</label>
+                    <select id="selectExpenseCategory">
+                        <option value="transport" data-i18n="transport">🚄 交通費</option>
+                        <option value="food" data-i18n="dining">🍽️ 食事</option>
+                        <option value="hotel" data-i18n="accommodation">🏨 宿泊</option>
+                        <option value="shopping" data-i18n="shoppingExp">🛍️ 買い物</option>
+                        <option value="ticket" data-i18n="admissionFee">🎫 入場料</option>
+                        <option value="other" data-i18n="otherExp">📦 その他</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="whoPaid">誰が払った？</label>
+                    <input type="text" id="inputExpensePayer" data-i18n-placeholder="exExpensePayer"
+                        placeholder="例：たろう" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="date">日付</label>
+                    <input type="date" id="inputExpenseDate" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalExpense" data-i18n="cancel">キャンセル</button>
+                <button id="btnSaveExpense" class="btn btn-primary" data-i18n="recordBtn">記録する</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: 投票作成 ===== -->
+    <div id="modalPoll" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="createVoteTitle">🗳️ 投票を作る</h2>
+                <button class="modal-close" data-close="modalPoll">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="question">質問</label>
+                    <input type="text" id="inputPollQuestion" data-i18n-placeholder="exPollQuestion"
+                        placeholder="例：ランチはどこにする？" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="options">選択肢（改行で区切る）</label>
+                    <textarea id="inputPollOptions" rows="4" data-i18n-placeholder="exPollOptions"
+                        placeholder="寿司屋\nイタリアン\nラーメン"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalPoll" data-i18n="cancel">キャンセル</button>
+                <button id="btnSavePoll" class="btn btn-primary" data-i18n="createBtn">作成</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: リマインダー ===== -->
+    <div id="modalReminder" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="reminderTitle">⏰ リマインダー</h2>
+                <button class="modal-close" data-close="modalReminder">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="content">内容</label>
+                    <input type="text" id="inputReminderText" data-i18n-placeholder="exReminderContent"
+                        placeholder="例：充電器を確認する" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="date">日付</label>
+                    <input type="date" id="inputReminderDate" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalReminder" data-i18n="cancel">キャンセル</button>
+                <button id="btnSaveReminder" class="btn btn-primary" data-i18n="save">追加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: 設定 ===== -->
+    <div id="modalSettings" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="settingsTitle">⚙️ 設定</h2>
+                <button class="modal-close" data-close="modalSettings">✕</button>
+            </div>
+            <div class="modal-body settings-list">
+                <!-- プラン情報 -->
+                <div class="settings-item">
+                    <div class="settings-info">
+                        <h3 data-i18n="currentPlanLabel">現在のプラン</h3>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span id="displayCurrentPlan" class="plan-badge free"
+                                data-i18n="freePlanName">通常プラン（無料）</span>
+                        </div>
+                        <p class="settings-hint" data-i18n="freePlanDesc">いつもの木のみ利用可能です。</p>
+                    </div>
+                    <button id="btnUpgrade" class="btn btn-primary btn-sm" data-i18n="upgradeBtn">アップグレード</button>
+                </div>
+
+                <!-- 言語設定 -->
+                <div class="settings-item">
+                    <div class="settings-info">
+                        <h3 data-i18n="languageLabel">言語 / Language</h3>
+                        <p class="settings-hint" data-i18n="languageDesc">アプリの表示言語を切り替えます。</p>
+                    </div>
+                    <div class="settings-action">
+                        <select id="selectLanguage" class="form-select-sm">
+                            <option value="ja">日本語</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- ダークモード -->
+                <div class="settings-item">
+                    <div class="settings-info">
+                        <h3 data-i18n="themeLabel">テーマ</h3>
+                        <p class="settings-hint" data-i18n="themeDesc">ライトモードとダークモードを切り替えます。</p>
+                    </div>
+                    <div class="settings-action">
+                        <button id="btnToggleThemeSettings" class="btn btn-secondary btn-sm">
+                            <span id="themeToggleIcon">☀️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- アプリ情報 -->
+                <div class="settings-app-info"
+                    style="margin-top:24px; text-align:center; border-top:1px solid var(--border); padding-top:16px;">
+                    <p class="app-version" style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">TaviNote
+                        Version 1.1.0</p>
+                    <div class="settings-links" style="display:flex; justify-content:center; gap:16px; font-size:13px;">
+                        <a href="#" id="linkTerms" class="text-link" data-i18n="termsOfService">利用規約</a>
+                        <a href="#" id="linkPrivacy" class="text-link" data-i18n="privacyPolicy">プライバシーポリシー</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalSettings" data-i18n="close">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: TaviNote Seasons 案内 ===== -->
+    <div id="modalPremium" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="seasonsTitle">✨ TaviNote Seasons</h2>
+                <button class="modal-close" data-close="modalPremium">✕</button>
+            </div>
+            <div class="modal-body premium-body">
+                <div class="premium-hero">
+                    <span class="premium-icon">🍂</span>
+                    <h3 data-i18n="seasonsSubtitle">旅の思い出を、季節とともに。</h3>
+                </div>
+                <ul class="premium-features">
+                    <li><span class="check-icon">✓</span> <span data-i18n="featureFall">プレミアムな木「紅葉」の解放</span></li>
+                    <li><span class="check-icon">✓</span> <span data-i18n="featureFuture">今後追加されるすべての季節の木を利用可能</span>
+                    </li>
+                    <li><span class="check-icon">✓</span> <span data-i18n="featureAdFree">広告非表示で快適に</span></li>
+                </ul>
+                <div class="premium-price">
+                    <span class="price-val">¥300</span> <span class="price-unit">/ 月</span>
+                </div>
+                <p class="premium-note" data-i18n="premiumNote">※現在はモックのボタンです。課金は発生しません。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close="modalPremium" data-i18n="cancel">やめておく</button>
+                <button id="btnSubscribe" class="btn btn-primary" data-i18n="subscribeBtn">プランに登録する</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== モーダル: 汎用情報表示 (利用規約・プライバシーポリシー用) ===== -->
+    <div id="modalInfo" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="infoModalTitle">情報</h2>
+                <button class="modal-close" data-close="modalInfo">✕</button>
+            </div>
+            <div class="modal-body" id="infoModalBody"
+                style="font-size:14px; line-height:1.6; max-height:60vh; overflow-y:auto;">
+                <!-- コンテンツはJSで流し込む -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-close="modalInfo" data-i18n="close">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- ===== モーダル: オンボーディング ===== -->
+    <div id="modalOnboarding" class="modal-overlay">
+        <div class="modal onboarding-modal">
+            <div class="onboarding-slides">
+                <!-- Slide 1 -->
+                <div class="onboarding-slide active" data-slide="0">
+                    <img src="images/onboarding/welcome.png" alt="Welcome">
+                    <h2 data-i18n="onboardingWelcomeTitle">旅の思い出を、木と一緒に育てよう</h2>
+                    <p data-i18n="onboardingWelcomeDesc">TaviNoteは、旅行の準備から思い出の保存までを「木の成長」として楽しむアプリです。</p>
+                </div>
+                <!-- Slide 2 -->
+                <div class="onboarding-slide" data-slide="1">
+                    <img src="images/onboarding/plan.png" alt="Plan">
+                    <h2 data-i18n="onboardingPlanTitle">旅行の計画を立てよう</h2>
+                    <p data-i18n="onboardingPlanDesc">行き先を決めてTODOリストを作成しましょう。準備を始めることが、木の種をまくことになります。</p>
+                </div>
+                <!-- Slide 3 -->
+                <div class="onboarding-slide" data-slide="2">
+                    <img src="images/onboarding/growth.png" alt="Growth">
+                    <h2 data-i18n="onboardingGrowthTitle">準備が進むと木も育ちます</h2>
+                    <p data-i18n="onboardingGrowthDesc">TODOを完了すると木が成長し、メッセージが届きます。100%を目指して楽しく準備しましょう！</p>
+                </div>
+                <!-- Slide 4 -->
+                <div class="onboarding-slide" data-slide="3">
+                    <img src="images/onboarding/collection.png" alt="Collection">
+                    <h2 data-i18n="onboardingCollectionTitle">自分だけの森を作ろう</h2>
+                    <p data-i18n="onboardingCollectionDesc">旅行が終わって100%になった木は、コレクションに保存されます。たくさんの思い出で森をいっぱいにしましょう。</p>
+                </div>
+            </div>
+            <div class="onboarding-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            <div class="modal-footer onboarding-footer">
+                <button id="btnOnboardingPrev" class="btn btn-ghost" data-i18n="onboardingPrev"
+                    style="visibility: hidden;">戻る</button>
+                <div class="footer-right">
+                    <button id="btnOnboardingSkip" class="btn btn-ghost" data-i18n="onboardingSkip">スキップ</button>
+                    <button id="btnOnboardingNext" class="btn btn-primary" data-i18n="onboardingNext">次へ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, onSnapshot, addDoc, serverTimestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            projectId: "tavinote-app-shota",
+            appId: "1:294241676346:web:5ea07651f5142dec705903",
+            storageBucket: "tavinote-app-shota.firebasestorage.app",
+            apiKey: "AIzaSyCdtdPo-83YWJuxN-BOvVtCcjWZyQcVxxs",
+            authDomain: "tavinote-app-shota.firebaseapp.com",
+            messagingSenderId: "294241676346"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make Firestore available globally for app.js
+        window.firebaseDb = db;
+        // Also export firestore helpers
+        window.firebaseHelpers = { collection, doc, setDoc, getDoc, updateDoc, onSnapshot, addDoc, serverTimestamp, deleteDoc };
+
+        // Firebaseの準備完了をapp.jsに通知する
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
+    <script src="app.js?v=20260309"></script>
+</body>
+
+</html>

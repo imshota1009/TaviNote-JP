@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TaviNote</string>
+    <string name="title_activity_main">TaviNote</string>
+    <string name="widget_default_trip_name">未設定</string>
+</resources>

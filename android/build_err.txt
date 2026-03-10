@@ -1,0 +1,57 @@
+﻿
+> Configure project :app
+WARNING: Using flatDir should be avoided because it doesn't support any meta-data formats.
+
+> Configure project :capacitor-cordova-android-plugins
+WARNING: Using flatDir should be avoided because it doesn't support any meta-data formats.
+.\gradlew : 
+発生場所 行:1 文字:1
++ .\gradlew assembleDe
+bug 2>&1 | Out-File -E
+ncoding utf8 build_err
+.txt
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (:String) [   
+ ], RemoteExceptio    
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+FAILURE: Build failed 
+with an exception.
+
+* What went wrong:
+Could not determine th
+e dependencies of task
+ ':app:compileDebugJav
+aWithJavac'.
+> SDK location not fou
+nd. Define a valid SDK
+ location with an ANDR
+OID_HOME environment v
+ariable or by setting 
+the sdk.dir path in yo
+ur project's local pro
+perties file at 'C:\Us
+ers\shota\.gemini\anti
+gravity\scratch\TaviNo
+te\android\local.prope
+rties'.
+
+* Try:
+> Run with --stacktrac
+e option to get the st
+ack trace.
+> Run with --info or -
+-debug option to get m
+ore log output.
+> Run with --scan to g
+et full insights.
+> Get more help at htt
+ps://help.gradle.org.
+
+BUILD FAILED in 2s
